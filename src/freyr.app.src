@@ -1,11 +1,18 @@
+%% -*- mode: erlang -*-
+%% ex: ft=erlang
 {application, freyr,
  [
   {description, ""},
   {vsn, "1"},
+  {modules, [
+             freyr_app,
+             freyr_sup
+            ]},
   {registered, []},
   {applications, [
                   kernel,
-                  stdlib
+                  stdlib,
+                  lager
                  ]},
   {mod, { freyr_app, []}},
   {env, []}
