@@ -1,0 +1,8 @@
+{application,freyr,
+             [{description,[]},
+              {vsn,"1"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {mod,{freyr_app,[]}},
+              {env,[]},
+              {modules,[freyr_app,freyr_sup]}]}.
