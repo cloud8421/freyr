@@ -11,4 +11,4 @@
 /.rebar
 .envrc
 /log
-/data/*.dets
+/data
