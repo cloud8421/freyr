@@ -2,7 +2,7 @@
 
 -behaviour(gen_server).
 
--export([start_link/0, insert/1, insert_from_binary/1, all/0]).
+-export([start_link/0, insert/1, insert_from_binary/1, all/0, create_table/0]).
 
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
@@ -64,6 +64,7 @@ create_table() ->
     true -> ok;
     false -> mnesia:create_table(?TABLE_NAME,
                                 [{type, ordered_set},
+                                 {disc_copies, [node()]},
                                  {attributes, record_info(fields,
                                                           freyr_reading)}])
   end.
