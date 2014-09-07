@@ -2,7 +2,7 @@
 
 -behaviour(gen_server).
 
--export([start_link/0, insert/1, all/0]).
+-export([start_link/0, insert/1, insert_from_binary/1, all/0]).
 
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
@@ -16,6 +16,9 @@ start_link() ->
 
 insert(NewReading) ->
   gen_server:cast(?MODULE, {insert, NewReading}).
+
+insert_from_binary(BinaryData) ->
+  gen_server:cast(?MODULE, {insert_from_binary, BinaryData}).
 
 all() ->
   gen_server:call(?MODULE, all).
@@ -34,10 +37,13 @@ handle_call(all, _From, []) ->
   {reply, Readings, []}.
 
 handle_cast({insert, NewReading}, []) ->
-  Insertion = fun() ->
-                  mnesia:write(NewReading)
-              end,
-  mnesia:transaction(Insertion),
+  do_insert(NewReading),
+  {noreply, []};
+
+handle_cast({insert_from_binary, BinaryData}, []) ->
+  Parsable = binary_to_list(BinaryData),
+  NewReading = freyr_parser:parse(Parsable),
+  do_insert(NewReading),
   {noreply, []}.
 
 handle_info(timeout, State) ->
@@ -63,3 +69,9 @@ create_table() ->
 table_exists(TableName) ->
   Tables = mnesia:system_info(tables),
   lists:member(TableName, Tables).
+
+do_insert(NewReading) ->
+  Insertion = fun() ->
+                  mnesia:write(NewReading)
+              end,
+  mnesia:transaction(Insertion).
