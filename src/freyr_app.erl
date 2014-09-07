@@ -12,6 +12,7 @@
 start(_StartType, _StartArgs) ->
   lager:start(),
   mnesia:start(),
+  leptus:start_listener(http, [{'_', [{freyr_api, undefined_state}]}]),
   mnesia:wait_for_tables([freyr_readings], 5000),
   freyr_sup:start_link().
 
