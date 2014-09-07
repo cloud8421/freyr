@@ -2,7 +2,8 @@
 
 -behaviour(gen_server).
 
--export([start_link/0, insert/1, insert_from_binary/1, all/0, create_table/0]).
+-export([start_link/0, insert/1, insert_from_binary/1,
+         all/0, create_table/0, by_hour/1]).
 
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
@@ -23,6 +24,9 @@ insert_from_binary(BinaryData) ->
 all() ->
   gen_server:call(?MODULE, all).
 
+by_hour(Hour) ->
+  gen_server:call(?MODULE, {by_hour, Hour}).
+
 %% callbacks
 init([]) ->
   create_table(),
@@ -31,11 +35,17 @@ init([]) ->
   {ok, EventDispatcher}.
 
 handle_call(all, _From, EventDispatcher) ->
-  Selection = fun() ->
-                  All = #freyr_reading{_ = '_'},
-                  mnesia:match_object(All)
-              end,
-  {atomic, Readings} = mnesia:transaction(Selection),
+  Q = fun() ->
+          mnesia:match_object(freyr_queries:all())
+      end,
+  {atomic, Readings} = mnesia:transaction(Q),
+  {reply, Readings, EventDispatcher};
+
+handle_call({by_hour, Hour}, _From, EventDispatcher) ->
+  Q = fun() ->
+          mnesia:match_object(freyr_queries:by_hour(Hour))
+      end,
+  {atomic, Readings} = mnesia:transaction(Q),
   {reply, Readings, EventDispatcher}.
 
 handle_cast({insert, NewReading}, EventDispatcher) ->
