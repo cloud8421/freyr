@@ -11,4 +11,6 @@
 /.rebar
 .envrc
 /log
+/itest/logs
+/itest/*.beam
 /data
