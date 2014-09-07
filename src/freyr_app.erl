@@ -10,7 +10,9 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
-    freyr_sup:start_link().
+  mnesia:create_schema([node()]),
+  mnesia:start(),
+  freyr_sup:start_link().
 
 stop(_State) ->
-    ok.
+  ok.
