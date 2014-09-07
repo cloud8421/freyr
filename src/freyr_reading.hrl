@@ -1,5 +1,7 @@
 -record(freyr_reading, {
-  temperature,
-  brightness,
-  moisture
- }).
+          uuid,
+          temperature,
+          brightness,
+          moisture,
+          timestamp
+         }).

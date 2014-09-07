@@ -13,9 +13,11 @@ toPairs([], Acc) ->
   {temperature, Temperature}= lists:keyfind(temperature, 1, Acc),
   {brightness, Brightness}= lists:keyfind(brightness, 1, Acc),
   {moisture, Moisture}= lists:keyfind(moisture, 1, Acc),
-  #freyr_reading{temperature=Temperature,
+  #freyr_reading{uuid=uuid(),
+                 temperature=Temperature,
                  brightness=Brightness,
-                 moisture=Moisture};
+                 moisture=Moisture,
+                 timestamp=calendar:universal_time()};
 toPairs([H|T], Acc) ->
   toPairs(T, [toPair(H) | Acc]).
 
@@ -40,3 +42,5 @@ normalize(Data) ->
     _Else -> Data
   end.
 
+uuid() ->
+  uuid:to_string(uuid:uuid1()).
