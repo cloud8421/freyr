@@ -2,32 +2,43 @@
 
 -behaviour(gen_server).
 
--export([start_link/0]).
+-export([start_link/0, insert/1, all/0]).
 
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
 
 -include("freyr_reading.hrl").
 
--ifdef(TEST).
-  -define(TABLE_NAME, freyr_readings_test).
--else.
-  -define(TABLE_NAME, freyr_readings).
--endif.
+-define(TABLE_NAME, freyr_reading).
 
 start_link() ->
   gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+
+insert(NewReading) ->
+  gen_server:cast(?MODULE, {insert, NewReading}).
+
+all() ->
+  gen_server:call(?MODULE, all).
 
 %% callbacks
 init([]) ->
   create_table(),
   {ok, []}.
 
-handle_call(_Request, _From, State) ->
-  {reply, ok, State}.
+handle_call(all, _From, []) ->
+  Selection = fun() ->
+                  All = #freyr_reading{_ = '_'},
+                  mnesia:match_object(All)
+              end,
+  {atomic, Readings} = mnesia:transaction(Selection),
+  {reply, Readings, []}.
 
-handle_cast(_Msg, State) ->
-  {noreply, State}.
+handle_cast({insert, NewReading}, []) ->
+  Insertion = fun() ->
+                  mnesia:write(NewReading)
+              end,
+  mnesia:transaction(Insertion),
+  {noreply, []}.
 
 handle_info(timeout, State) ->
   {noreply, State}.
