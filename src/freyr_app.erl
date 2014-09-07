@@ -10,6 +10,7 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
+  lager:start(),
   mnesia:create_schema([node()]),
   mnesia:start(),
   freyr_sup:start_link().

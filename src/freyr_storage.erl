@@ -26,25 +26,27 @@ all() ->
 %% callbacks
 init([]) ->
   create_table(),
-  {ok, []}.
+  {ok, EventDispatcher} = gen_event:start_link(),
+  gen_event:add_handler(EventDispatcher, freyr_logger, []),
+  {ok, EventDispatcher}.
 
-handle_call(all, _From, []) ->
+handle_call(all, _From, EventDispatcher) ->
   Selection = fun() ->
                   All = #freyr_reading{_ = '_'},
                   mnesia:match_object(All)
               end,
   {atomic, Readings} = mnesia:transaction(Selection),
-  {reply, Readings, []}.
+  {reply, Readings, EventDispatcher}.
 
-handle_cast({insert, NewReading}, []) ->
-  do_insert(NewReading),
-  {noreply, []};
+handle_cast({insert, NewReading}, EventDispatcher) ->
+  do_insert(NewReading, EventDispatcher),
+  {noreply, EventDispatcher};
 
-handle_cast({insert_from_binary, BinaryData}, []) ->
+handle_cast({insert_from_binary, BinaryData}, EventDispatcher) ->
   Parsable = binary_to_list(BinaryData),
   NewReading = freyr_builder:parse(Parsable),
-  do_insert(NewReading),
-  {noreply, []}.
+  do_insert(NewReading, EventDispatcher),
+  {noreply, EventDispatcher}.
 
 handle_info(timeout, State) ->
   {noreply, State}.
@@ -70,8 +72,9 @@ table_exists(TableName) ->
   Tables = mnesia:system_info(tables),
   lists:member(TableName, Tables).
 
-do_insert(NewReading) ->
+do_insert(NewReading, EventDispatcher) ->
   Insertion = fun() ->
                   mnesia:write(NewReading)
               end,
-  mnesia:transaction(Insertion).
+  mnesia:transaction(Insertion),
+  gen_event:notify(EventDispatcher, {insert, NewReading}).
