@@ -12,7 +12,8 @@
   {applications, [
                   kernel,
                   stdlib,
-                  lager
+                  lager,
+                  cowboy
                  ]},
   {mod, { freyr_app, []}},
   {env, []}
