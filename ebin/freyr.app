@@ -1,7 +1,7 @@
 {application,freyr,
              [{description,[]},
               {vsn,"1"},
-              {modules,[freyr_app,freyr_listener,freyr_parser,freyr_storage,
+              {modules,[freyr_app,freyr_builder,freyr_listener,freyr_storage,
                         freyr_sup]},
               {registered,[]},
               {applications,[kernel,stdlib,lager]},

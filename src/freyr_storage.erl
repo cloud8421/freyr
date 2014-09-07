@@ -42,7 +42,7 @@ handle_cast({insert, NewReading}, []) ->
 
 handle_cast({insert_from_binary, BinaryData}, []) ->
   Parsable = binary_to_list(BinaryData),
-  NewReading = freyr_parser:parse(Parsable),
+  NewReading = freyr_builder:parse(Parsable),
   do_insert(NewReading),
   {noreply, []}.
 
