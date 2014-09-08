@@ -32,4 +32,16 @@ install() ->
 start_cowboy() ->
   DispatchSpec = [{'_', [{"/readings/[:reading_id]", freyr_cowboy_handler, []}]}],
   Dispatch = cowboy_router:compile(DispatchSpec),
-  {ok, _} = cowboy:start_http(http, 100, [{port, 9000}], [{env, [{dispatch, Dispatch}]}]).
+  {ok, _} = cowboy:start_http(http, 100, [{port, 9000}], cowboy_conf(env(), Dispatch)).
+
+env() ->
+  os:getenv("ERL_ENV").
+
+cowboy_conf("development", Dispatch) ->
+  [{env, [{dispatch, Dispatch}]},
+  {onrequest, fun cowboy_debug:onrequest_hook/1},
+  {onresponse, fun cowboy_debug:onresponse_hook/4}];
+cowboy_conf("production", Dispatch) ->
+  [{env, [{dispatch, Dispatch}]}];
+cowboy_conf("test", Dispatch) ->
+  [{env, [{dispatch, Dispatch}]}].

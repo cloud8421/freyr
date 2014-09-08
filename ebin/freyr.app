@@ -1,7 +1,7 @@
 {application,freyr,
              [{description,[]},
               {vsn,"1"},
-              {modules,[freyr_api,freyr_app,freyr_builder,
+              {modules,[cowboy_debug,freyr_api,freyr_app,freyr_builder,
                         freyr_cowboy_handler,freyr_listener,freyr_logger,
                         freyr_queries,freyr_reading_serializer,freyr_storage,
                         freyr_sup]},
