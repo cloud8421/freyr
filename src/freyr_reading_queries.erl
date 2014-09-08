@@ -1,4 +1,4 @@
--module(freyr_queries).
+-module(freyr_reading_queries).
 
 -export([all/0, by_hour/1, by_device/1]).
 

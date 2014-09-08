@@ -1,4 +1,4 @@
--module(freyr_readings_storage).
+-module(freyr_reading_store).
 
 -behaviour(gen_server).
 
@@ -39,21 +39,21 @@ init([]) ->
 
 handle_call(all, _From, EventDispatcher) ->
   Q = fun() ->
-          mnesia:match_object(freyr_queries:all())
+          mnesia:match_object(freyr_reading_queries:all())
       end,
   {atomic, Readings} = mnesia:transaction(Q),
   {reply, Readings, EventDispatcher};
 
 handle_call({by_hour, Hour}, _From, EventDispatcher) ->
   Q = fun() ->
-          mnesia:match_object(freyr_queries:by_hour(Hour))
+          mnesia:match_object(freyr_reading_queries:by_hour(Hour))
       end,
   {atomic, Readings} = mnesia:transaction(Q),
   {reply, Readings, EventDispatcher};
 
 handle_call({by_device, Device}, _From, EventDispatcher) ->
   Q = fun() ->
-          mnesia:match_object(freyr_queries:by_device(Device))
+          mnesia:match_object(freyr_reading_queries:by_device(Device))
       end,
   {atomic, Readings} = mnesia:transaction(Q),
   {reply, Readings, EventDispatcher}.
@@ -80,18 +80,8 @@ code_change(_OldVsn, State, _Extra) ->
 %% Private
 
 create_table() ->
-  case table_exists(?TABLE_NAME) of
-    true -> ok;
-    false -> mnesia:create_table(?TABLE_NAME,
-                                [{type, ordered_set},
-                                 {disc_copies, [node()]},
-                                 {attributes, record_info(fields,
-                                                          freyr_reading)}])
-  end.
-
-table_exists(TableName) ->
-  Tables = mnesia:system_info(tables),
-  lists:member(TableName, Tables).
+  Attributes = record_info(fields, freyr_reading),
+  freyr_storage_utils:create_table(?TABLE_NAME, Attributes).
 
 do_insert(NewReading, EventDispatcher) ->
   Insertion = fun() ->
