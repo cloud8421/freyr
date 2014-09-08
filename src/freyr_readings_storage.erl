@@ -1,4 +1,4 @@
--module(freyr_storage).
+-module(freyr_readings_storage).
 
 -behaviour(gen_server).
 

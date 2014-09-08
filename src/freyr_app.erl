@@ -26,7 +26,7 @@ stop(_State) ->
 install() ->
   ok = mnesia:create_schema([node()]),
   application:start(mnesia),
-  freyr_storage:create_table(),
+  freyr_readings_storage:create_table(),
   application:stop(mnesia).
 
 start_cowboy() ->

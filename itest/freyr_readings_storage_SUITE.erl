@@ -1,4 +1,4 @@
--module(freyr_storage_SUITE).
+-module(freyr_readings_storage_SUITE).
 
 -include_lib("common_test/include/ct.hrl").
 
@@ -17,21 +17,21 @@ init_per_suite(Config) ->
   Config.
 
 init_per_testcase(_, Config) ->
-  {ok, _Pid} = freyr_storage:start_link(),
+  {ok, _Pid} = freyr_readings_storage:start_link(),
   Config.
 
 inserts_reading(_Config) ->
-  [] = freyr_storage:all(),
+  [] = freyr_readings_storage:all(),
   NewReading = {freyr_reading,"ee6ab164-366f-11e4-a7d9-b8e8563a72e8",
                 "abc4rq1q3rw", 23.7, 390,3700,{{2014,9,7},{9,18,29}}},
-  ok = freyr_storage:insert(NewReading),
-  [NewReading] = freyr_storage:all().
+  ok = freyr_readings_storage:insert(NewReading),
+  [NewReading] = freyr_readings_storage:all().
 
 finds_by_hour(_Config) ->
   NewReading = {freyr_reading,"ee6ab164-366f-11e4-a7d9-b8e8563a72e8",
                 23.7,"abc4rq1q3rw",390,3700,{{2014,9,7},{9,18,29}}},
-  ok = freyr_storage:insert(NewReading),
-  [NewReading] = freyr_storage:by_hour(9).
+  ok = freyr_readings_storage:insert(NewReading),
+  [NewReading] = freyr_readings_storage:by_hour(9).
 
 end_per_suite(_Config) ->
   application:stop(mnesia),

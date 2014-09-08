@@ -23,6 +23,6 @@ get_json(Req, State) ->
   Body = jsx:encode(Serialized),
   {Body, Req2, State}.
 
-get_data([]) -> freyr_storage:all();
-get_data([{<<"hour">>, Hour}]) -> freyr_storage:by_hour(binary_to_integer(Hour));
-get_data([{<<"device">>, Device}]) -> freyr_storage:by_device(binary_to_list(Device)).
+get_data([]) -> freyr_readings_storage:all();
+get_data([{<<"hour">>, Hour}]) -> freyr_readings_storage:by_hour(binary_to_integer(Hour));
+get_data([{<<"device">>, Device}]) -> freyr_readings_storage:by_device(binary_to_list(Device)).

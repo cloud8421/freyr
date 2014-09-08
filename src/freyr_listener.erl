@@ -28,7 +28,7 @@ handle_info(timeout, LSock) ->
   {ok, _LSock} = gen_tcp:accept(LSock),
   {noreply, LSock};
 handle_info({tcp, _Socket, Data}, LSock) ->
-  freyr_storage:insert_from_binary(Data),
+  freyr_readings_storage:insert_from_binary(Data),
   {noreply, LSock};
 handle_info({tcp_closed, _Socket}, LSock) ->
   {ok, _LSock} = gen_tcp:accept(LSock),
