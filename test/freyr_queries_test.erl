@@ -9,6 +9,7 @@
 all_query_test() ->
   Sample = #freyr_reading{
                 uuid="caa6b6ac-369b-11e4-bf59-b8e8563a72e8",
+                device_id="abc4rq1q3rw",
                 temperature=23.4,
                 brightness=4000,
                 moisture=300,
@@ -19,6 +20,7 @@ all_query_test() ->
 by_hour_query_test() ->
   Match = #freyr_reading{
                 uuid="caa6b6ac-369b-11e4-bf59-b8e8563a72e8",
+                device_id="abc4rq1q3rw",
                 temperature=23.4,
                 brightness=4000,
                 moisture=300,

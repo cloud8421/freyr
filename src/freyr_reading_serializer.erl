@@ -9,8 +9,9 @@ serialize(Readings) ->
                 do_serialize(Reading)
             end, Readings).
 
-do_serialize({freyr_reading, Uuid, Temperature, Brigthness, Moisture, Timestamp}) ->
+do_serialize({freyr_reading, Uuid, DeviceId, Temperature, Brigthness, Moisture, Timestamp}) ->
   [{<<"uuid">>, list_to_binary(Uuid)},
+   {<<"device_id">>, list_to_binary(DeviceId)},
    {<<"temperature">>, Temperature},
    {<<"brightness">>, Brigthness},
    {<<"moisture">>, Moisture},

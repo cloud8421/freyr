@@ -10,10 +10,12 @@ parse(Data) ->
   toPairs(Pairs, []).
 
 toPairs([], Acc) ->
-  {temperature, Temperature}= lists:keyfind(temperature, 1, Acc),
-  {brightness, Brightness}= lists:keyfind(brightness, 1, Acc),
-  {moisture, Moisture}= lists:keyfind(moisture, 1, Acc),
+  {device_id, DeviceId} = lists:keyfind(device_id, 1, Acc),
+  {temperature, Temperature} = lists:keyfind(temperature, 1, Acc),
+  {brightness, Brightness} = lists:keyfind(brightness, 1, Acc),
+  {moisture, Moisture} = lists:keyfind(moisture, 1, Acc),
   #freyr_reading{uuid=uuid(),
+                 device_id=DeviceId,
                  temperature=Temperature,
                  brightness=Brightness,
                  moisture=Moisture,
@@ -25,6 +27,8 @@ toPair(Pair) ->
   Tokens = string:tokens(Pair, ":"),
   tokenize(Tokens).
 
+tokenize(["device", DeviceId]) ->
+  {device_id, DeviceId};
 tokenize(["temperature", "f", Value]) ->
   {Temp, []} = string:to_float(Value),
   {temperature, Temp};

@@ -22,14 +22,14 @@ init_per_testcase(_, Config) ->
 
 inserts_reading(_Config) ->
   [] = freyr_storage:all(),
-  NewReading = {freyr_reading,"ee6ab164-366f-11e4-a7d9-b8e8563a72e8",23.7,
-                390,3700,{{2014,9,7},{9,18,29}}},
+  NewReading = {freyr_reading,"ee6ab164-366f-11e4-a7d9-b8e8563a72e8",
+                "abc4rq1q3rw", 23.7, 390,3700,{{2014,9,7},{9,18,29}}},
   ok = freyr_storage:insert(NewReading),
   [NewReading] = freyr_storage:all().
 
 finds_by_hour(_Config) ->
-  NewReading = {freyr_reading,"ee6ab164-366f-11e4-a7d9-b8e8563a72e8",23.7,
-                390,3700,{{2014,9,7},{9,18,29}}},
+  NewReading = {freyr_reading,"ee6ab164-366f-11e4-a7d9-b8e8563a72e8",
+                23.7,"abc4rq1q3rw",390,3700,{{2014,9,7},{9,18,29}}},
   ok = freyr_storage:insert(NewReading),
   [NewReading] = freyr_storage:by_hour(9).
 

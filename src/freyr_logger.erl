@@ -31,6 +31,7 @@ terminate(_Reason, _State) ->
 
 %% utility
 reading_to_logline(Reading) ->
+  DeviceId = Reading#freyr_reading.device_id,
   Timestamp = Reading#freyr_reading.timestamp,
   Temp = Reading#freyr_reading.temperature,
   Brightness = Reading#freyr_reading.brightness,
@@ -41,6 +42,7 @@ reading_to_logline(Reading) ->
   MoistureString = integer_to_list(Moisture),
   TimestampString = timestamp_to_string(Timestamp),
   "[timestamp: " ++ TimestampString ++ ", "
+  "device: " ++ DeviceId ++ ", "
   "temp: " ++ TempString ++ ", "
   "moisture: " ++ MoistureString ++ ", "
   "brightness: " ++ BrightnessString ++ "]".
