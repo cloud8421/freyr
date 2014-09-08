@@ -1,4 +1,4 @@
--module(freyr_builder).
+-module(freyr_reading_builder).
 
 -export([parse/1]).
 

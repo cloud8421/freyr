@@ -64,7 +64,7 @@ handle_cast({insert, NewReading}, EventDispatcher) ->
 
 handle_cast({insert_from_binary, BinaryData}, EventDispatcher) ->
   Parsable = binary_to_list(BinaryData),
-  NewReading = freyr_builder:parse(Parsable),
+  NewReading = freyr_reading_builder:parse(Parsable),
   do_insert(NewReading, EventDispatcher),
   {noreply, EventDispatcher}.
 
