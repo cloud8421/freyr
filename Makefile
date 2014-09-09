@@ -1,4 +1,4 @@
-.PHONY: deps compile test clean start
+.PHONY: deps compile test clean start tags
 REBAR=`which rebar || ./rebar`
 all: deps compile
 deps:
