@@ -7,6 +7,7 @@
   {modules, [
              freyr_app,
              freyr_device_handler,
+             freyr_device_serializer,
              freyr_reading_handler,
              freyr_listener,
              freyr_logger,

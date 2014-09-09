@@ -4,12 +4,11 @@
 
 -include("freyr_reading.hrl").
 
-serialize(Readings) ->
+serialize(Readings) when is_list(Readings) ->
   lists:map(fun(Reading) ->
-                do_serialize(Reading)
-            end, Readings).
-
-do_serialize({freyr_reading, Uuid, DeviceId, Temperature, Brigthness, Moisture, Timestamp}) ->
+                serialize(Reading)
+            end, Readings);
+serialize({freyr_reading, Uuid, DeviceId, Temperature, Brigthness, Moisture, Timestamp}) ->
   [{<<"uuid">>, list_to_binary(Uuid)},
    {<<"device_id">>, list_to_binary(DeviceId)},
    {<<"temperature">>, Temperature},
