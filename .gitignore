@@ -14,3 +14,5 @@
 /itest/logs
 /itest/*.beam
 /data
+/*.dump
+/rel/freyr

@@ -6,6 +6,16 @@
   {vsn, "1"},
   {modules, [
              freyr_app,
+             freyr_cowboy_handler,
+             freyr_listener,
+             freyr_logger,
+             freyr_plant,
+             freyr_reading,
+             freyr_reading_builder,
+             freyr_reading_queries,
+             freyr_reading_serializer,
+             freyr_reading_store,
+             freyr_storage_utils,
              freyr_sup
             ]},
   {registered, []},
