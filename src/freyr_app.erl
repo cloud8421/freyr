@@ -30,6 +30,7 @@ install() ->
   application:stop(mnesia).
 
 start_cowboy() ->
-  DispatchSpec = [{'_', [{"/readings/[:reading_id]", freyr_cowboy_handler, []}]}],
+  DispatchSpec = [{'_', [{"/readings/[:reading_id]", freyr_reading_handler, []},
+                         {"/devices/[:device_id]", freyr_device_handler, []}]}],
   Dispatch = cowboy_router:compile(DispatchSpec),
   {ok, _} = cowboy:start_http(http, 100, [{port, 9000}], [{env, [{dispatch, Dispatch}]}]).

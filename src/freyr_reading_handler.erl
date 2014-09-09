@@ -1,4 +1,4 @@
--module(freyr_cowboy_handler).
+-module(freyr_reading_handler).
 
 -export([init/3]).
 -export([allowed_methods/2, content_types_accepted/2, content_types_provided/2]).
