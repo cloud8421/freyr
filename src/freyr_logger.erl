@@ -10,7 +10,7 @@ terminate/2]).
 init([]) ->
   {ok, []}.
 
-handle_event({insert, Reading}, State) ->
+handle_event({insert, reading, Reading}, State) ->
   lager:info("~s\n", [reading_to_logline(Reading)]),
   {ok, State};
 

@@ -88,4 +88,4 @@ do_insert(NewReading, EventDispatcher) ->
                   mnesia:write(NewReading)
               end,
   mnesia:transaction(Insertion),
-  gen_event:notify(EventDispatcher, {insert, NewReading}).
+  gen_event:notify(EventDispatcher, {insert, reading, NewReading}).
