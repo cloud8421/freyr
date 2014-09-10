@@ -1,4 +1,4 @@
 language: erlang
 otp_release:
    - 17.1
-script: "make test && make ct"
+script: "rebar compile && make test && make ct"
