@@ -1,0 +1,13 @@
+{application,freyr,
+             [{description,[]},
+              {vsn,"1"},
+              {modules,[freyr_app,freyr_device,freyr_device_handler,
+                        freyr_device_queries,freyr_device_store,
+                        freyr_listener,freyr_logger,freyr_reading_builder,
+                        freyr_reading_calc,freyr_reading_handler,
+                        freyr_reading_queries,freyr_reading_store,
+                        freyr_serializer,freyr_storage_utils,freyr_sup]},
+              {registered,[]},
+              {applications,[kernel,stdlib,lager,cowboy]},
+              {mod,{freyr_app,[]}},
+              {env,[]}]}.
