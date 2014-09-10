@@ -7,6 +7,7 @@
 
 -include("../src/freyr_reading.hrl").
 -include("../src/freyr_device.hrl").
+-include("../src/freyr_device_with_metadata.hrl").
 
 find_test() ->
   meck:new(freyr_reading_store),
@@ -17,9 +18,9 @@ find_test() ->
                        average_brightness=>4000,
                        average_moisture=>500},
   [Reading | _Rest] = readings(),
-  Expected = #{device => device(),
-               last_reading => Reading,
-               averages => ExpectedAverages},
+  Expected = #freyr_device_with_metadata{device=device(),
+                                   averages=ExpectedAverages,
+                                   last_reading=Reading},
   ?assertEqual(freyr_device:find("abc4rq1q3rw"), Expected).
 
 readings() ->
