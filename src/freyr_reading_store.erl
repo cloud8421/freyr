@@ -80,7 +80,7 @@ code_change(_OldVsn, State, _Extra) ->
 %% Private
 
 create_table() ->
-  Attributes = record_info(fields, freyr_reading),
+  Attributes = record_info(fields, ?TABLE_NAME),
   freyr_storage_utils:create_table(?TABLE_NAME, Attributes).
 
 do_insert(NewReading, EventDispatcher) ->
