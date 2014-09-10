@@ -18,8 +18,8 @@
              freyr_reading_calc,
              freyr_reading_handler,
              freyr_reading_queries,
-             freyr_reading_serializer,
              freyr_reading_store,
+             freyr_serializer,
              freyr_storage_utils,
              freyr_sup
             ]},

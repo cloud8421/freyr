@@ -24,8 +24,8 @@ serialize({freyr_device, Uuid, Name, Location, CreatedAt, UpdatedAt}) ->
    {<<"updated_at">>, list_to_binary(timestamp_to_string(UpdatedAt))}];
 
 serialize({freyr_device_with_metadata, Device, Averages, Reading}) ->
-  #{averages=>Averages,
-    device=>serialize(Device),
+  #{device=>serialize(Device),
+    averages=>Averages,
     last_reading=>serialize(Reading)}.
 
 timestamp_to_string({{Year, Month, Day}, {Hour, Minutes, Seconds}}) ->
