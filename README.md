@@ -1,5 +1,7 @@
 # Freyr
 
+[![Build Status](https://travis-ci.org/cloud8421/freyr.svg?branch=master)](https://travis-ci.org/cloud8421/freyr)
+
 Proof of concept application to monitor plant life.
 
 ## Components
