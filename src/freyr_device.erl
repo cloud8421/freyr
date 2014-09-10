@@ -1,0 +1,21 @@
+-module(freyr_device).
+
+-export([find/1]).
+
+-include("freyr_reading.hrl").
+-include("freyr_device_with_metadata.hrl").
+
+find(DeviceId) ->
+  Device = freyr_device_store:by_id(DeviceId),
+  Metadata = metadata(DeviceId),
+  {ok, Averages} = maps:find(averages, Metadata),
+  {ok, LastReading} = maps:find(last_reading, Metadata),
+  #freyr_device_with_metadata{device=Device,
+                              averages=Averages,
+                              last_reading=LastReading}.
+
+metadata(DeviceId) when is_list(DeviceId) ->
+  Readings = [LastReading | _Rest] = freyr_reading_store:by_device(DeviceId),
+  Averages = freyr_reading_calc:averages(Readings),
+  #{averages => Averages,
+    last_reading => LastReading}.

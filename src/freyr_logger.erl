@@ -6,12 +6,17 @@
 terminate/2]).
 
 -include("freyr_reading.hrl").
+-include("freyr_device.hrl").
 
 init([]) ->
   {ok, []}.
 
-handle_event({insert, Reading}, State) ->
+handle_event({insert, reading, Reading}, State) ->
   lager:info("~s\n", [reading_to_logline(Reading)]),
+  {ok, State};
+
+handle_event({insert, device, Device}, State) ->
+  lager:info("~s\n", [device_to_logline(Device)]),
   {ok, State};
 
 handle_event(_, State) ->
@@ -46,6 +51,16 @@ reading_to_logline(Reading) ->
   "temp: " ++ TempString ++ ", "
   "moisture: " ++ MoistureString ++ ", "
   "brightness: " ++ BrightnessString ++ "]".
+
+device_to_logline(Device) ->
+  DeviceId = Device#freyr_device.uuid,
+  Name = Device#freyr_device.name,
+  Timestamp = Device#freyr_device.created_at,
+
+  TimestampString = timestamp_to_string(Timestamp),
+  "[timestamp: " ++ TimestampString ++ ", "
+  "device: " ++ DeviceId ++ ", "
+  "name: " ++ Name ++ "]".
 
 timestamp_to_string({{Year, Month, Day}, {Hour, Minutes, Seconds}}) ->
   Date = lists:map(fun(X) -> integer_to_list(X) end, [Year, Month, Day]),

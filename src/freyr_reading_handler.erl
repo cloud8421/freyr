@@ -19,7 +19,7 @@ content_types_provided(Req, State) ->
 get_json(Req, State) ->
   {AllValues, Req2} = cowboy_req:qs_vals(Req),
   Readings = get_data(AllValues),
-  Serialized = freyr_reading_serializer:serialize(Readings),
+  Serialized = freyr_serializer:serialize(Readings),
   Body = jsx:encode(Serialized),
   {Body, Req2, State}.
 

@@ -29,6 +29,7 @@ get_json(Req, undefined) ->
   {Body, Req, undefined};
 
 get_json(Req, DeviceId) ->
-  Metadata = freyr_device_serializer:metadata(binary_to_list(DeviceId)),
-  Body = jsx:encode(Metadata),
+  Device = freyr_device:find(binary_to_list(DeviceId)),
+  Serialized = freyr_serializer:serialize(Device),
+  Body = jsx:encode(Serialized),
   {Body, Req, DeviceId}.
