@@ -3,7 +3,8 @@
 -behaviour(gen_server).
 
 -export([start_link/0, insert/1, insert_from_binary/1,
-         all/0, create_table/0, by_hour/1, by_device/1]).
+         all/0, create_table/0, by_hour/1, by_device/1,
+         last_by_device/1]).
 
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
@@ -27,8 +28,11 @@ all() ->
 by_hour(Hour) when is_integer(Hour) ->
   gen_server:call(?MODULE, {by_hour, Hour}).
 
-by_device(Device) when is_list(Device) ->
-  gen_server:call(?MODULE, {by_device, Device}).
+by_device(DeviceId) when is_list(DeviceId) ->
+  gen_server:call(?MODULE, {by_device, DeviceId}).
+
+last_by_device(DeviceId) when is_list(DeviceId) ->
+  gen_server:call(?MODULE, {last_by_device, DeviceId}).
 
 %% callbacks
 init([]) ->
@@ -56,7 +60,14 @@ handle_call({by_device, Device}, _From, EventDispatcher) ->
           freyr_reading_queries:by_device(Device)
       end,
   {atomic, Readings} = mnesia:transaction(Q),
-  {reply, Readings, EventDispatcher}.
+  {reply, Readings, EventDispatcher};
+
+handle_call({last_by_device, Device}, _From, EventDispatcher) ->
+  Q = fun() ->
+          freyr_reading_queries:last_by_device(Device)
+      end,
+  {atomic, Reading} = mnesia:transaction(Q),
+  {reply, Reading, EventDispatcher}.
 
 handle_cast({insert, NewReading}, EventDispatcher) ->
   do_insert(NewReading, EventDispatcher),
