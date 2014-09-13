@@ -39,6 +39,7 @@ init([]) ->
   create_table(),
   {ok, EventDispatcher} = gen_event:start_link(),
   gen_event:add_handler(EventDispatcher, freyr_logger, []),
+  gen_event:add_handler(EventDispatcher, freyr_email_handler, []),
   {ok, EventDispatcher}.
 
 handle_call(all, _From, EventDispatcher) ->

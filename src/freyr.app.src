@@ -10,6 +10,7 @@
              freyr_device_handler,
              freyr_device_queries,
              freyr_device_store,
+             freyr_email_handler,
              freyr_listener,
              freyr_logger,
              freyr_plant,
