@@ -20,8 +20,10 @@
              freyr_reading_queries,
              freyr_reading_store,
              freyr_serializer,
+             freyr_settings,
              freyr_storage_utils,
-             freyr_sup
+             freyr_sup,
+             freyr_url_helper
             ]},
   {registered, []},
   {applications, [

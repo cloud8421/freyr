@@ -35,4 +35,6 @@ start_cowboy() ->
   DispatchSpec = [{'_', [{"/readings/[:reading_id]", freyr_reading_handler, []},
                          {"/devices/[:device_id]", freyr_device_handler, []}]}],
   Dispatch = cowboy_router:compile(DispatchSpec),
-  {ok, _} = cowboy:start_http(http, 100, [{port, 9000}], [{env, [{dispatch, Dispatch}]}]).
+  {ok, _} = cowboy:start_http(http, 100, [{port, freyr_settings:http_port()},
+                                          {ip, freyr_settings:http_host()}],
+                              [{env, [{dispatch, Dispatch}]}]).
