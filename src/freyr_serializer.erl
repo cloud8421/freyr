@@ -26,9 +26,14 @@ serialize({freyr_device, Uuid, Name, Location, CreatedAt, UpdatedAt}) ->
 serialize({freyr_device_with_metadata, Device, Averages, Reading}) ->
   #{device=>serialize(Device),
     averages=>Averages,
-    last_reading=>serialize(Reading)}.
+    last_reading=>serialize(Reading),
+    meta => device_meta(Device#freyr_device.uuid)}.
 
 timestamp_to_string({{Year, Month, Day}, {Hour, Minutes, Seconds}}) ->
   Date = lists:map(fun(X) -> integer_to_list(X) end, [Year, Month, Day]),
   Time = lists:map(fun(X) -> integer_to_list(X) end, [Hour, Minutes, Seconds]),
   string:join(Date, ":") ++ "-" ++ string:join(Time, ":").
+
+device_meta(DeviceId) ->
+  ReadingsUrl = list_to_binary(freyr_url_helper:url_for([{devices, DeviceId}, readings])),
+  #{links => #{readings => ReadingsUrl}}.

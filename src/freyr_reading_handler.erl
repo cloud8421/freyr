@@ -17,12 +17,11 @@ content_types_provided(Req, State) ->
   {[{{<<"application">>, <<"json">>, []}, get_json}], Req, State}.
 
 get_json(Req, State) ->
-  {AllValues, Req2} = cowboy_req:qs_vals(Req),
-  Readings = get_data(AllValues),
+  {DeviceId, Req2} = cowboy_req:binding(device_id, Req),
+  Readings = get_readings(DeviceId),
   Serialized = freyr_serializer:serialize(Readings),
   Body = jsx:encode(Serialized),
   {Body, Req2, State}.
 
-get_data([]) -> freyr_reading_store:all();
-get_data([{<<"hour">>, Hour}]) -> freyr_reading_store:by_hour(binary_to_integer(Hour));
-get_data([{<<"device">>, Device}]) -> freyr_reading_store:by_device(binary_to_list(Device)).
+get_readings(DeviceId) ->
+  freyr_reading_store:by_device(binary_to_list(DeviceId)).

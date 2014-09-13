@@ -63,6 +63,11 @@ serializes_device_test() ->
                                 {<<"temperature">>,24.2},
                                 {<<"brightness">>,750},
                                 {<<"moisture">>,4000},
-                                {<<"timestamp">>,<<"2014:9:8-8:42:21">>}]},
+                                {<<"timestamp">>,<<"2014:9:8-8:42:21">>}],
+               meta => #{
+                  links => #{
+                    readings => <<"http://localhost:9000/devices/abc4rq1q3rw/readings">>
+                   }
+                }},
   Serialized = freyr_serializer:serialize(Device),
   ?assertEqual(Serialized, Expected).
