@@ -2,3 +2,5 @@ language: erlang
 otp_release:
    - 17.1
 script: "rebar compile && make test && make ct"
+env:
+  - HTTP_PORT=9000
