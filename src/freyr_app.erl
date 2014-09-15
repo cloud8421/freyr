@@ -16,6 +16,7 @@ start(_StartType, _StartArgs) ->
   application:start(cowlib),
   application:start(cowboy),
   mnesia:start(),
+  setup_http_logger(),
   start_cowboy(),
   mnesia:wait_for_tables([freyr_readings], 500),
   freyr_sup:start_link().
@@ -37,4 +38,16 @@ start_cowboy() ->
   Dispatch = cowboy_router:compile(DispatchSpec),
   {ok, _} = cowboy:start_http(http, 100, [{port, freyr_settings:http_port()},
                                           {ip, freyr_settings:http_host()}],
-                              [{env, [{dispatch, Dispatch}]}]).
+                              [
+                               {env, [{dispatch, Dispatch}]},
+                               {onresponse, fun log/4}
+                              ]).
+
+log(Status, _Headers, _Body, Req) ->
+  EventPayload = #{request => Req, status => Status},
+  gen_event:notify({global, http_logger}, EventPayload),
+  Req.
+
+setup_http_logger() ->
+  {ok, HttpLogger} = gen_event:start_link({global, http_logger}),
+  gen_event:add_handler(HttpLogger, freyr_logger, []).

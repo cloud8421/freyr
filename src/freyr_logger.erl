@@ -19,6 +19,10 @@ handle_event({insert, device, Device}, State) ->
   lager:info("~s\n", [device_to_logline(Device)]),
   {ok, State};
 
+handle_event(#{request := Req, status := Status}, State) ->
+  lager:info("~s\n", [request_to_logline(Req, Status)]),
+  {ok, State};
+
 handle_event(_, State) ->
   {ok, State}.
 
@@ -66,3 +70,7 @@ timestamp_to_string({{Year, Month, Day}, {Hour, Minutes, Seconds}}) ->
   Date = lists:map(fun(X) -> integer_to_list(X) end, [Year, Month, Day]),
   Time = lists:map(fun(X) -> integer_to_list(X) end, [Hour, Minutes, Seconds]),
   string:join(Date, ":") ++ "-" ++ string:join(Time, ":").
+
+request_to_logline(Req, Status) ->
+  {Path, _Req2} = cowboy_req:path(Req),
+  "path=" ++ binary_to_list(Path) ++ " status=" ++ integer_to_list(Status).
