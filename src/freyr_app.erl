@@ -39,6 +39,7 @@ start_cowboy() ->
   {ok, _} = cowboy:start_http(http, 100, [{port, freyr_settings:http_port()},
                                           {ip, freyr_settings:http_host()}],
                               [
+                               {compress, true},
                                {env, [{dispatch, Dispatch}]},
                                {onresponse, fun log/4}
                               ]).
