@@ -29,7 +29,10 @@ get_json(Req, undefined) ->
   {Body, Req, undefined};
 
 get_json(Req, DeviceId) ->
-  Device = freyr_device:find(binary_to_list(DeviceId)),
-  Serialized = freyr_serializer:serialize(Device),
-  Body = jsx:encode(Serialized),
-  {Body, Req, DeviceId}.
+  case freyr_device:find(binary_to_list(DeviceId)) of
+    nil -> {ok, Req2} = cowboy_req:reply(404, [], Req),
+           {halt, Req2, DeviceId};
+    Device -> Serialized = freyr_serializer:serialize(Device),
+              Body = jsx:encode(Serialized),
+              {Body, Req, DeviceId}
+  end.

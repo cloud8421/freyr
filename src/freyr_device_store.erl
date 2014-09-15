@@ -41,8 +41,11 @@ handle_call({by_id, DeviceId}, _From, EventDispatcher) ->
   Q = fun() ->
           mnesia:read(?TABLE_NAME, DeviceId)
       end,
-  {atomic, [Device]} = mnesia:transaction(Q),
-  {reply, Device, EventDispatcher}.
+  Result = case mnesia:transaction(Q) of
+             {atomic, [Device]} -> Device;
+             {atomic, []} -> nil
+           end,
+  {reply, Result, EventDispatcher}.
 
 handle_cast({insert, NewDevice}, EventDispatcher) ->
   do_insert(NewDevice, EventDispatcher),

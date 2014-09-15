@@ -18,10 +18,14 @@ content_types_provided(Req, State) ->
 
 get_json(Req, State) ->
   {DeviceId, Req2} = cowboy_req:binding(device_id, Req),
-  Readings = get_readings(DeviceId),
-  Serialized = freyr_serializer:serialize(Readings),
-  Body = jsx:encode(Serialized),
-  {Body, Req2, State}.
+  case freyr_device:find(binary_to_list(DeviceId)) of
+    nil -> {ok, Req3} = cowboy_req:reply(404, [], Req2),
+           {halt, Req3, DeviceId};
+    _Device -> Readings = get_readings(DeviceId),
+               Serialized = freyr_serializer:serialize(Readings),
+               Body = jsx:encode(Serialized),
+               {Body, Req2, State}
+  end.
 
 get_readings(DeviceId) ->
   freyr_reading_store:by_device(binary_to_list(DeviceId)).
