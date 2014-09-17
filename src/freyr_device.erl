@@ -1,6 +1,6 @@
 -module(freyr_device).
 
--export([find/1]).
+-export([find/1, create/1]).
 
 -include("freyr_reading.hrl").
 -include("freyr_device_with_metadata.hrl").
@@ -15,6 +15,12 @@ find(DeviceId) ->
                                           averages=Averages,
                                           last_reading=LastReading}
   end.
+
+create(NewDevice) ->
+  Insertion = fun() ->
+                  mnesia:write(NewDevice)
+              end,
+  mnesia:transaction(Insertion).
 
 metadata(DeviceId) when is_list(DeviceId) ->
   Readings = [LastReading | _Rest] = freyr_reading_store:by_device(DeviceId),

@@ -48,7 +48,8 @@ handle_call({by_id, DeviceId}, _From, EventDispatcher) ->
   {reply, Result, EventDispatcher}.
 
 handle_cast({insert, NewDevice}, EventDispatcher) ->
-  do_insert(NewDevice, EventDispatcher),
+  freyr_device:create(NewDevice),
+  gen_event:notify(EventDispatcher, {insert, device, NewDevice}),
   {noreply, EventDispatcher}.
 
 handle_info(timeout, State) ->
@@ -65,10 +66,3 @@ code_change(_OldVsn, State, _Extra) ->
 create_table() ->
   Attributes = record_info(fields, ?TABLE_NAME),
   freyr_storage_utils:create_table(?TABLE_NAME, Attributes).
-
-do_insert(NewDevice, EventDispatcher) ->
-  Insertion = fun() ->
-                  mnesia:write(NewDevice)
-              end,
-  mnesia:transaction(Insertion),
-  gen_event:notify(EventDispatcher, {insert, device, NewDevice}).
