@@ -32,7 +32,7 @@ init([]) ->
 
 handle_call(all, _From, EventDispatcher) ->
   Q = fun() ->
-          mnesia:match_object(freyr_device_queries:all())
+          freyr_queries:request({device, all})
       end,
   {atomic, Devices} = mnesia:transaction(Q),
   {reply, Devices, EventDispatcher};

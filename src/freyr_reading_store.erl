@@ -44,28 +44,28 @@ init([]) ->
 
 handle_call(all, _From, EventDispatcher) ->
   Q = fun() ->
-          freyr_reading_queries:all()
+          freyr_queries:request({reading, all})
       end,
   {atomic, Readings} = mnesia:transaction(Q),
   {reply, Readings, EventDispatcher};
 
 handle_call({by_hour, Hour}, _From, EventDispatcher) ->
   Q = fun() ->
-          freyr_reading_queries:by_hour(Hour)
+          freyr_queries:request({reading, by_hour, Hour})
       end,
   {atomic, Readings} = mnesia:transaction(Q),
   {reply, Readings, EventDispatcher};
 
 handle_call({by_device, Device}, _From, EventDispatcher) ->
   Q = fun() ->
-          freyr_reading_queries:by_device(Device)
+          freyr_queries:request({reading, by_device, Device})
       end,
   {atomic, Readings} = mnesia:transaction(Q),
   {reply, Readings, EventDispatcher};
 
 handle_call({last_by_device, Device}, _From, EventDispatcher) ->
   Q = fun() ->
-          freyr_reading_queries:last_by_device(Device)
+          freyr_queries:request({reading, last_by_device, Device})
       end,
   {atomic, Reading} = mnesia:transaction(Q),
   {reply, Reading, EventDispatcher}.
