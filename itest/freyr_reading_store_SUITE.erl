@@ -13,7 +13,7 @@ init_per_suite(Config) ->
   application:set_env(mnesia, dir, Priv),
   freyr_app:install(),
   mnesia:start(),
-  mnesia:wait_for_tables([freyr_readings], 5000),
+  mnesia:wait_for_tables([freyr_readings], 100),
   Config.
 
 init_per_testcase(_, Config) ->
