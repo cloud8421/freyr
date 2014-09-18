@@ -1,4 +1,4 @@
--module(freyr_reading_builder_test).
+-module(freyr_reading_builder_tests).
 
 -c(freyr_reading_builder).
 -c(mocks).

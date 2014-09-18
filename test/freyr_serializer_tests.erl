@@ -1,4 +1,4 @@
--module(freyr_serializer_test).
+-module(freyr_serializer_tests).
 
 -c(freyr_serializer).
 -c(mocks).

@@ -1,4 +1,4 @@
--module(freyr_url_helper_test).
+-module(freyr_url_helper_tests).
 
 -c(freyr_url_helper).
 

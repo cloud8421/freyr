@@ -1,4 +1,4 @@
--module(freyr_device_test).
+-module(freyr_device_tests).
 
 -c(freyr_device).
 -c(mocks).

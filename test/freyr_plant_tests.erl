@@ -1,4 +1,4 @@
--module(freyr_plant_test).
+-module(freyr_plant_tests).
 
 -c(freyr_plant).
 -c(mocks).
