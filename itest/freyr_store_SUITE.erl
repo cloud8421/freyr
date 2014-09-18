@@ -25,12 +25,14 @@ inserts_reading(_Config) ->
   NewReading = {freyr_reading,"ee6ab164-366f-11e4-a7d9-b8e8563a72e8",
                 "abc4rq1q3rw", 23.7, 390,3700,{{2014,9,7},{9,18,29}}},
   ok = freyr_store:insert(reading, NewReading),
+  timer:sleep(100),
   [NewReading] = freyr_reading:all().
 
 finds_by_hour(_Config) ->
   NewReading = {freyr_reading,"ee6ab164-366f-11e4-a7d9-b8e8563a72e8",
                 23.7,"abc4rq1q3rw",390,3700,{{2014,9,7},{9,18,29}}},
   ok = freyr_store:insert(reading, NewReading),
+  timer:sleep(100),
   [NewReading] = freyr_reading:by_hour(9).
 
 end_per_suite(_Config) ->
