@@ -28,4 +28,4 @@ get_json(Req, State) ->
   end.
 
 get_readings(DeviceId) ->
-  freyr_reading_store:by_device(binary_to_list(DeviceId)).
+  freyr_reading:by_device(binary_to_list(DeviceId)).

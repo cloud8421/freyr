@@ -28,8 +28,8 @@ install() ->
   application:stop(mnesia),
   ok = mnesia:create_schema([node()]),
   application:start(mnesia),
-  freyr_reading_store:create_table(),
-  freyr_device_store:create_table(),
+  freyr_reading:create_table(),
+  freyr_device:create_table(),
   application:stop(mnesia).
 
 start_cowboy() ->

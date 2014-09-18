@@ -1,13 +1,14 @@
--module(freyr_device).
+-module(freyr_reading).
 
--export([find/1, create/1, all/0]).
+-export([find/1, create/1, all/0, by_hour/1, by_device/1,
+         last_by_device/1]).
 -export([create_table/0]).
 
 -include("freyr_reading.hrl").
 -include("freyr_device.hrl").
 -include("freyr_device_with_metadata.hrl").
 
--define(TABLE_NAME, freyr_device).
+-define(TABLE_NAME, freyr_reading).
 
 find(DeviceId) when is_list(DeviceId) ->
   case do_find(DeviceId) of
@@ -20,16 +21,37 @@ find(DeviceId) when is_list(DeviceId) ->
                                           last_reading=LastReading}
   end.
 
+by_hour(Hour) when is_integer(Hour) ->
+  Q = fun() ->
+          freyr_queries:request({reading, by_hour, Hour})
+      end,
+  {atomic, Readings} = mnesia:transaction(Q),
+  Readings.
+
+by_device(DeviceId) when is_list(DeviceId) ->
+  Q = fun() ->
+          freyr_queries:request({reading, by_device, DeviceId})
+      end,
+  {atomic, Readings} = mnesia:transaction(Q),
+  Readings.
+
+last_by_device(DeviceId) when is_list(DeviceId) ->
+  Q = fun() ->
+          freyr_queries:request({reading, last_by_device, DeviceId})
+      end,
+  {atomic, Reading} = mnesia:transaction(Q),
+  Reading.
+
 all() ->
   Q = fun() ->
-          freyr_queries:request({device, all})
+          freyr_queries:request({reading, all})
       end,
   {atomic, Devices} = mnesia:transaction(Q),
   Devices.
 
-create(NewDevice) ->
+create(NewReading) ->
   Insertion = fun() ->
-                  mnesia:write(NewDevice)
+                  mnesia:write(NewReading)
               end,
   mnesia:transaction(Insertion).
 

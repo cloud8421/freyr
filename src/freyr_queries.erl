@@ -6,8 +6,10 @@
 -include("freyr_device.hrl").
 -include("freyr_reading.hrl").
 
+%% device
 request({device, all}) ->
   mnesia:match_object(#freyr_device{_='_'});
+%% reading
 request({reading, all}) ->
   Query = qlc:q([Reading || Reading <- mnesia:table(freyr_reading)]),
   qlc:eval(qlc:sort(Query, {order, fun reading_timestamp_descending/2}));

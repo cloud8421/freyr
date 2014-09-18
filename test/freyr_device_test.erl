@@ -10,10 +10,10 @@
 -include("../src/freyr_device_with_metadata.hrl").
 
 find_test() ->
-  meck:new(freyr_reading_store),
-  meck:expect(freyr_reading_store, by_device, fun("abc4rq1q3rw") -> readings() end),
-  meck:new(freyr_device_store),
-  meck:expect(freyr_device_store, by_id, fun("abc4rq1q3rw") -> device() end),
+  meck:new(freyr_reading),
+  meck:expect(freyr_reading, by_device, fun("abc4rq1q3rw") -> readings() end),
+  meck:new(mnesia),
+  meck:expect(mnesia, transaction, fun(_Q) -> {atomic, [device()]} end),
   ExpectedAverages = #{average_temperature=>24.0,
                        average_brightness=>4000,
                        average_moisture=>500},

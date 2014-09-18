@@ -23,7 +23,6 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-  FreyrReadingStore = ?CHILD(freyr_reading_store, worker),
-  FreyrDeviceStore = ?CHILD(freyr_device_store, worker),
+  FreyrStore = ?CHILD(freyr_store, worker),
   FreyrListener = ?CHILD(freyr_listener, worker),
-  {ok, { {one_for_one, 5, 10}, [FreyrReadingStore, FreyrDeviceStore, FreyrListener]} }.
+  {ok, { {one_for_one, 5, 10}, [FreyrStore, FreyrListener]} }.
