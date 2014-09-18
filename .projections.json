@@ -1,0 +1,6 @@
+{
+  "src/*.hrl": {"type": "record"},
+  "src/*.erl": {"type": "src", "alternate": "test/{}_tests.erl"},
+  "test/*_tests.erl": {"type": "test", "alternate": "src/{}.erl"},
+  "itest/*_SUITE.erl": {"type": "suite"}
+}
