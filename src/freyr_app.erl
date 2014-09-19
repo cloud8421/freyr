@@ -18,7 +18,7 @@ start(_StartType, _StartArgs) ->
   mnesia:start(),
   setup_http_logger(),
   start_cowboy(),
-  mnesia:wait_for_tables([freyr_readings], 500),
+  mnesia:wait_for_tables([freyr_reading, freyr_device, freyr_plant], 100),
   freyr_sup:start_link().
 
 stop(_State) ->
@@ -30,11 +30,13 @@ install() ->
   application:start(mnesia),
   freyr_reading:create_table(),
   freyr_device:create_table(),
+  freyr_plant:create_table(),
   application:stop(mnesia).
 
 start_cowboy() ->
-  DispatchSpec = [{'_', [{"/devices/[:device_id]/readings/[:reading_id]", freyr_reading_handler, []},
-                         {"/devices/[:device_id]", freyr_device_handler, []}]}],
+  DispatchSpec = [{'_', [{"/devices/[:device_id]/readings", freyr_reading_handler, []},
+                         {"/devices/[:device_id]", freyr_device_handler, []},
+                         {"/devices/[:device_id]/plants", freyr_plant_handler, []}]}],
   Dispatch = cowboy_router:compile(DispatchSpec),
   {ok, _} = cowboy:start_http(http, 100, [{port, freyr_settings:http_port()},
                                           {ip, freyr_settings:http_host()}],

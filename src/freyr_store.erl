@@ -53,7 +53,10 @@ do_create(device, NewItem) ->
   freyr_device:create(NewItem);
 
 do_create(reading, NewItem) ->
-  freyr_reading:create(NewItem).
+  freyr_reading:create(NewItem);
+
+do_create(plant, NewItem) ->
+  freyr_plant:create(NewItem).
 
 parse_binary(reading, BinaryData) ->
   Parsable = binary_to_list(BinaryData),

@@ -15,3 +15,11 @@
 @test "404 for /devices/:id/readings with non existing device" {
   [ "$(curl 2>/dev/null -i http://localhost:9000/devices/foo/readings | grep 404)" ]
 }
+
+@test "200 for /devices/:id/plants with existing device" {
+  [ "$(curl 2>/dev/null -i http://localhost:9000/devices/abc1234xyz/readings | grep 200)" ]
+}
+
+@test "404 for /devices/:id/plants with non existing device" {
+  [ "$(curl 2>/dev/null -i http://localhost:9000/devices/foo/readings | grep 404)" ]
+}
