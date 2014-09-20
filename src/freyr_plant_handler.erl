@@ -34,7 +34,7 @@ get_json(Req, DeviceId) ->
            {halt, Req2, DeviceId};
     _Device -> Plants = get_plants(DeviceId),
                Serialized = freyr_serializer:serialize(Plants),
-               Body = jsx:encode(Serialized),
+               Body = json:to_binary(Serialized),
                {Body, Req, DeviceId}
   end.
 

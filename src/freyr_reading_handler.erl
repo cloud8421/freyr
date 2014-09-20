@@ -23,7 +23,7 @@ get_json(Req, State) ->
            {halt, Req3, DeviceId};
     _Device -> Readings = get_readings(DeviceId),
                Serialized = freyr_serializer:serialize(Readings),
-               Body = jsx:encode(Serialized),
+               Body = json:to_binary(Serialized),
                {Body, Req2, State}
   end.
 

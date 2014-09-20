@@ -25,7 +25,7 @@ resource_exists(Req, _State) ->
   end.
 
 get_json(Req, undefined) ->
-  Body = jsx:encode([]),
+  Body = json:to_binary([]),
   {Body, Req, undefined};
 
 get_json(Req, DeviceId) ->
@@ -33,6 +33,6 @@ get_json(Req, DeviceId) ->
     nil -> {ok, Req2} = cowboy_req:reply(404, [], Req),
            {halt, Req2, DeviceId};
     Device -> Serialized = freyr_serializer:serialize(Device),
-              Body = jsx:encode(Serialized),
+              Body = json:to_binary(Serialized),
               {Body, Req, DeviceId}
   end.
