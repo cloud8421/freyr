@@ -12,6 +12,6 @@ ct:
 clean:
 	@$(REBAR) clean
 start:
-	erl -pa ebin -pa deps/*/ebin -sname freyr -mnesia dir '"./data"'
+	@$(REBAR) compile skip_deps=true && erl -pa ebin -pa deps/*/ebin -sname freyr -mnesia dir '"./data"'
 tags:
 	ctags --file-scope=no -R --languages=erlang --exclude=.eunit .
