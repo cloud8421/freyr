@@ -16,6 +16,7 @@ start(_StartType, _StartArgs) ->
   application:start(cowlib),
   application:start(cowboy),
   mnesia:start(),
+  start_ibrowse(),
   setup_http_logger(),
   start_cowboy(),
   mnesia:wait_for_tables([freyr_reading, freyr_device, freyr_plant], 100),
@@ -45,6 +46,10 @@ start_cowboy() ->
                                {env, [{dispatch, Dispatch}]},
                                {onresponse, fun log/4}
                               ]).
+
+start_ibrowse() ->
+  ssl:start(),
+  ibrowse:start().
 
 log(Status, _Headers, _Body, Req) ->
   EventPayload = #{request => Req, status => Status},

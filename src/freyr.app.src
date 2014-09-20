@@ -9,6 +9,7 @@
              freyr_device,
              freyr_device_handler,
              freyr_email_handler,
+             freyr_forecast_client,
              freyr_listener,
              freyr_logger,
              freyr_plant,
