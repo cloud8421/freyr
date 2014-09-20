@@ -18,10 +18,12 @@ serialize({freyr_reading, Uuid, DeviceId, Temperature, Brigthness, Moisture, Tim
    {<<"moisture">>, Moisture},
    {<<"timestamp">>, list_to_binary(timestamp_to_string(Timestamp))}];
 
-serialize({freyr_device, Uuid, Name, Location, CreatedAt, UpdatedAt}) ->
+serialize({freyr_device, Uuid, Name, Location, Lat, Lng, CreatedAt, UpdatedAt}) ->
   [{<<"uuid">>, list_to_binary(Uuid)},
    {<<"name">>, list_to_binary(Name)},
    {<<"location">>, list_to_binary(Location)},
+   {<<"lat">>, Lat},
+   {<<"lng">>, Lng},
    {<<"created_at">>, list_to_binary(timestamp_to_string(CreatedAt))},
    {<<"updated_at">>, list_to_binary(timestamp_to_string(UpdatedAt))}];
 

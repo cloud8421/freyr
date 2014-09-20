@@ -38,9 +38,13 @@ serializes_readings_to_list_test() ->
   ?assertEqual(Serialized, Expected).
 
 serializes_device_test() ->
-  Device = #freyr_device_with_metadata{device={freyr_device,"abc4rq1q3rw","The first","Living Room",
-                                               {{2014,9,10},{7,50,47}},
-                                               {{2014,9,10},{7,50,47}}},
+  Device = #freyr_device_with_metadata{device=#freyr_device{uuid="abc4rq1q3rw",
+                                                            name="The first",
+                                                            location="Living Room",
+                                                            lat=51.5199579,
+                                                            lng= -0.0990549,
+                                                            created_at={{2014,9,10},{7,50,47}},
+                                                            updated_at={{2014,9,10},{7,50,47}}},
                                        averages=#{average_brightness => 692,
                                                   average_moisture => 3159,
                                                   average_temperature => 21.954999999999995},
@@ -53,6 +57,8 @@ serializes_device_test() ->
   Expected = #{device => [{<<"uuid">>, <<"abc4rq1q3rw">>},
                           {<<"name">>, <<"The first">>},
                           {<<"location">>, <<"Living Room">>},
+                          {<<"lat">>, 51.5199579},
+                          {<<"lng">>, -0.0990549},
                           {<<"created_at">>, <<"2014:9:10-7:50:47">>},
                           {<<"updated_at">>, <<"2014:9:10-7:50:47">>}],
                averages => #{average_brightness => 692,
