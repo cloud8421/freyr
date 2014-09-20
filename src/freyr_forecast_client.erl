@@ -1,8 +1,8 @@
 -module(freyr_forecast_client).
 
--export([fetch/2, parse_response/1]).
+-export([fetch/2]).
 
--define(EXCLUDED_DATA, "minutely,hourly,daily,alerts,flags").
+-define(EXCLUDED_DATA, "alerts,flags").
 -define(DATA_FORMAT, "si").
 
 fetch(Lat, Lng) ->
