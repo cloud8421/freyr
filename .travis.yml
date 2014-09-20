@@ -3,4 +3,4 @@ otp_release:
    - 17.1
 script: "rebar compile && make test && make ct"
 env:
-  - HTTP_PORT=9000
+  - HTTP_PORT=9000 FORECAST_IO_API_KEY=xxx
